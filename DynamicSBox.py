@@ -10,7 +10,8 @@ def main():
     raw_bits = "example"
     # Convert each character in raw_bits to its 8-bit binary representation
     bit_string = ''.join(format(ord(char), '08b') for char in raw_bits)
-    modified_string = manipulate_bits(bit_string, binary_list)
+    modified_string = interate_bits(bit_string)
+    modified_string = substitution_bits(modified_string, binary_list)
     print("Original:", bit_string)
     print("Modified:", modified_string)
 
@@ -18,14 +19,28 @@ def integers_to_binary(int_list):
     binary_list = [format(num, '04b') for num in int_list]
     return binary_list
 
-def manipulate_bits(bit_string, binary_list):
+def interate_bits(bit_string):
+    result = []
+    reps = len(bit_string)//2
+    for i in range(reps):
+        bit1 = bit_string[i]
+        bit2 = bit_string[i+reps]
+        bit1 = int(bit1, 2)
+        bit2 = int(bit2, 2)
+        xored = bit1^bit2
+        result.append(str(xored))
+    if len(bit_string)%2 == 1:
+        result.append(bit_string[-1])
+    end_bits = bit_string + ''.join(result)
+    return end_bits
+
+def substitution_bits(bit_string, binary_list):
     result = []
     # Process the string in chunks of 6 bits
     for i in range(0, len(bit_string) // 6 * 6, 6):
         chunk = bit_string[i:i+6]
         # Convert to list for mutability
         chunk_list = list(chunk)
-        # Modify the first and last bits
         inner_bits = ''.join(chunk_list[0] + chunk_list[-1])
         outer_bits = ''.join(chunk_list[1:5])
         inner_bits = int(inner_bits, 2)
@@ -38,7 +53,7 @@ def manipulate_bits(bit_string, binary_list):
     remaining_bits = len(bit_string) % 6
     if remaining_bits:
         result.append(bit_string[-remaining_bits:])
-
+    
     return ''.join(result)
 
 if __name__ == '__main__':
