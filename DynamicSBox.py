@@ -7,17 +7,24 @@ def main():
     ]
     binary_list = integers_to_binary(int_list)
 
-    raw_bits = "example"
-    # Convert each character in raw_bits to its 8-bit binary representation
+    raw_bits = "Eric-Jacob Daley"
     bit_string = ''.join(format(ord(char), '08b') for char in raw_bits)
-    modified_string = interate_bits(bit_string)
-    modified_string = substitution_bits(modified_string, binary_list)
+    modified_string = encrypt_round(bit_string, binary_list)
+    for i in range(15):
+        modified_string = encrypt_round(modified_string, binary_list)
+
+    # Convert each character in raw_bits to its 8-bit binary representation
     print("Original:", bit_string)
     print("Modified:", modified_string)
 
 def integers_to_binary(int_list):
     binary_list = [format(num, '04b') for num in int_list]
     return binary_list
+
+def encrypt_round(bit_string, binary_list):
+    xored_string = interate_bits(bit_string)
+    modified_string = substitution_bits(xored_string, binary_list)
+    return modified_string
 
 def interate_bits(bit_string):
     result = []
